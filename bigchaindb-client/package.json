@@ -14,8 +14,9 @@
   "license": "ISC",
   "dependencies": {
     "bigchaindb-driver": "^0.3.0",
-    "choo": "^5.6.2",
+    "choo": "^6.0.0-2",
     "choo-log": "^7.0.1",
+    "sheetify": "^6.1.0",
     "xhr": "^2.4.0",
     "xtend": "^4.0.1"
   },
