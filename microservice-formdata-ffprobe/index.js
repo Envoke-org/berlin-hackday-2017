@@ -9,6 +9,10 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 
+app.get('/', function (req, res, next) {
+  res.send('OK')
+})
+
 app.post('/', function (req, res, next) {
   const form = new formidable.IncomingForm()
 
