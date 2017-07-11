@@ -37,7 +37,6 @@ module.exports = function (state, emit) {
 
     reader.onload = (e) => {
       const music = e.target.result
-      console.log(music, reader)
 
       const formData = new window.FormData()
       formData.append('myFile', files)
@@ -50,7 +49,8 @@ module.exports = function (state, emit) {
 
       xhr(options, (err, res, body) => {
         if (err) { return }
-        console.log(body)
+        const json = JSON.parse(body)
+        console.log(json)
       })
 
       // see link
