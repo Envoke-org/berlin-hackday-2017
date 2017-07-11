@@ -5,6 +5,7 @@ const html = require('choo/html')
 const log = require('choo-log')
 const extend = require('xtend')
 const css = require('sheetify')
+const bdb = require('./bdb/index.js')
 
 css('./styles/bootstrap.min.css')
 css('./styles/layout.css')
@@ -21,7 +22,7 @@ app.use(store)
 app.route('/', Layout(require('./views/home')))
 app.route('/register', Layout(require('./views/main')))
 app.route('/key', Layout(require('./views/key')))
-app.route('/create', Layout(require('./views/create')))
+app.route('/upload', Layout(require('./views/upload')))
 app.route('/publish', Layout(require('./views/publish')))
 app.mount('body')
 
@@ -50,12 +51,10 @@ function store (state, emitter) {
     }
   }
 
-  state.dragging = false
+  state.mnemonic = state.mnemonic || ''
+  state.keyPair = state.keyPair || ''
 
-  if (!state.key) {
-    const key = new driver.Ed25519Keypair()
-    state.key = key
-  }
+  state.dragging = false
 
   emitter.on('DOMContentLoaded', () => {
     emitter.on('create-key-pair', createKeyPair)
@@ -72,6 +71,23 @@ function store (state, emitter) {
     emitter.on('dragleave', () => {
       state.dragging = false
       emitter.emit('render')
+    })
+    emitter.on('generate-mnemonic', () => {
+      state.mnemonic = bdb.generateMnemonic()
+      emitter.emit('render')
+    })
+    emitter.on('keypair-from-mnemonic', () => {
+      state.keyPair = bdb.keypairFromMnemonic(state.mnemonic)
+      emitter.emit('render')
+    })
+    emitter.on('publish', (payload) => {
+      const { data = { city: 'Berlin, DE', temperature: 22 } } = payload
+      bdb.publish(state.keyPair, extend(data, {
+        datetime: new Date().toString()})
+      )
+    })
+    emitter.on('get-transaction', (payload) => {
+      bdb.getTransaction()
     })
   })
 
@@ -110,7 +126,7 @@ function store (state, emitter) {
 
   // Create a new keypair.
   function createKeyPair () {
-    const key = new driver.Ed25519Keypair()
+    const key = bdb.generateKeypair()
     state.key = key
     emitter.emit('render')
   }
