@@ -1,0 +1,25 @@
+{
+  "name": "musichackday",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "bankai index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bigchaindb-driver": "^0.3.0",
+    "choo": "^5.6.2",
+    "choo-log": "^7.0.1",
+    "xhr": "^2.4.0",
+    "xtend": "^4.0.1"
+  },
+  "devDependencies": {
+    "bankai": "^8.1.1"
+  }
+}
