@@ -1,7 +1,8 @@
 const envoke = require('./lib/index.js')
 const driver = require('bigchaindb-driver')
-const log = require('choo-log')
 const choo = require('choo')
+const html = require('choo/html')
+const log = require('choo-log')
 const extend = require('xtend')
 const css = require('sheetify')
 
@@ -15,8 +16,20 @@ const { newPerson, newOrganization, newMusicGroup } = envoke.schema
 const app = choo()
 app.use(log())
 app.use(store)
-app.route('/', require('./views/main'))
+
+app.route('/', Layout(require('./views/main')))
+app.route('/create', Layout(require('./views/create')))
 app.mount('body')
+
+function Layout (View) {
+  return (state, emit) => {
+    return html`
+      <body>
+        ${View(state, emit)}
+      </body>
+    `
+  }
+}
 
 function store (state, emitter) {
   if (!state.form) {
@@ -77,7 +90,7 @@ function store (state, emitter) {
 
     state.form = payload
     state.user = user
-    emitter.emit('render')
+    emitter.emit('pushState', '/create')
   }
 
   // Create a new keypair.

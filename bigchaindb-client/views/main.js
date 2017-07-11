@@ -18,33 +18,29 @@ module.exports = function (state, emit) {
   function handleSubmit (e) {
     e.preventDefault()
     const type = e.target.type.value
-    const person = {
+    emit('create-user', extend(type === 'Person' ? {
       birthDate: e.target.birthDate.value,
       familyName: e.target.familyName.value,
       givenName: e.target.givenName.value,
       image: e.target.image.value
-    }
-    const other = {
+    } : {
       name: e.target.name.value,
       description: e.target.description.value,
       email: e.target.email.value,
       members: e.target.members.value,
       image: e.target.image.value
-    }
-    emit('create-user', extend(type === 'Person' ? person : other, { type }))
+    }, { type }))
   }
   return html`
-    <body>
-      <div class="container">
-        <div class="row">
-          <form onsubmit=${handleSubmit}>
-            ${select(options)}
-            ${state.form.type === 'Person' ? PersonForm() : DefaultForm()}
-            <button class="btn btn-default" type="submit">Register</button>
-          </form>
-        </div>
+    <div class="container">
+      <div class="row">
+        <form onsubmit=${handleSubmit}>
+          ${select(options)}
+          ${state.form.type === 'Person' ? PersonForm() : DefaultForm()}
+          <button class="btn btn-default" type="submit">Register</button>
+        </form>
       </div>
-    </body>
+    </div>
   `
 
   function DefaultForm () {
