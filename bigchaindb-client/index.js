@@ -7,6 +7,7 @@ const extend = require('xtend')
 const css = require('sheetify')
 
 css('./styles/bootstrap.min.css')
+css('./styles/layout.css')
 
 // BigchainDB server instance or IPDB (e.g. https://test.ipdb.io/api/v1/)
 const API_PATH = 'http://localhost:9984/api/v1/'
@@ -19,6 +20,7 @@ app.use(store)
 
 app.route('/', Layout(require('./views/main')))
 app.route('/create', Layout(require('./views/create')))
+app.route('/publish', Layout(require('./views/publish')))
 app.mount('body')
 
 function Layout (View) {

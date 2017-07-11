@@ -4,17 +4,40 @@ const extend = require('xtend')
 const options = ['Person', 'Organization', 'MusicGroup'].map((n) => ({ value: n, label: n }))
 
 module.exports = function (state, emit) {
+  return html`
+    <div class="container">
+      <h1>
+        ${text()}
+      </h1>
+      <div class="row">
+        <form onsubmit=${handleSubmit}>
+          ${select(options)}
+          ${state.form.type === 'Person' ? PersonForm() : DefaultForm()}
+          <button class="btn btn-default" type="submit">Register</button>
+        </form>
+      </div>
+    </div>
+  `
+
   function select (options, value = state.form.type) {
+    function option (o) {
+      return html`
+        <option value="${o.value}"selected="${value === o.value}">
+          ${o.label}
+        </option>
+      `
+    }
     return html`
-      <select onchange=${(e) => emit('update-type', e.target.value)} name="type">
-        ${options.map((o) =>
-          html`<option value="${o.value}"
-              selected="${value === o.value}">
-              ${o.label}
-          </option>`
-        )}
-      </select>`
+      <fieldset>
+        <div class="form-group">
+          <select class="form-control" onchange=${(e) => emit('update-type', e.target.value)} name="type">
+            ${options.map(option)}
+          </select>
+        </div>
+      </fieldset>
+    `
   }
+
   function handleSubmit (e) {
     e.preventDefault()
     const type = e.target.type.value
@@ -31,17 +54,18 @@ module.exports = function (state, emit) {
       image: e.target.image.value
     }, { type }))
   }
-  return html`
-    <div class="container">
-      <div class="row">
-        <form onsubmit=${handleSubmit}>
-          ${select(options)}
-          ${state.form.type === 'Person' ? PersonForm() : DefaultForm()}
-          <button class="btn btn-default" type="submit">Register</button>
-        </form>
-      </div>
-    </div>
-  `
+
+  function text () {
+    switch (state.form.type) {
+      case 'Person':
+        return 'You are an individual'
+      case 'Organization':
+        return 'You are an organization'
+      case 'MusicGroup':
+        return 'You are a music group'
+      default:
+    }
+  }
 
   function DefaultForm () {
     return html`
