@@ -18,7 +18,9 @@ const app = choo()
 app.use(log())
 app.use(store)
 
-app.route('/', Layout(require('./views/main')))
+app.route('/', Layout(require('./views/home')))
+app.route('/register', Layout(require('./views/main')))
+app.route('/key', Layout(require('./views/key')))
 app.route('/create', Layout(require('./views/create')))
 app.route('/publish', Layout(require('./views/publish')))
 app.mount('body')
@@ -48,6 +50,8 @@ function store (state, emitter) {
     }
   }
 
+  state.dragging = false
+
   if (!state.key) {
     const key = new driver.Ed25519Keypair()
     state.key = key
@@ -59,6 +63,14 @@ function store (state, emitter) {
     emitter.on('create-user', createUser)
     emitter.on('update-type', (value) => {
       state.form.type = value
+      emitter.emit('render')
+    })
+    emitter.on('dragging', () => {
+      state.dragging = true
+      emitter.emit('render')
+    })
+    emitter.on('dragleave', () => {
+      state.dragging = false
       emitter.emit('render')
     })
   })
@@ -92,6 +104,7 @@ function store (state, emitter) {
 
     state.form = payload
     state.user = user
+    console.log(user)
     emitter.emit('pushState', '/create')
   }
 

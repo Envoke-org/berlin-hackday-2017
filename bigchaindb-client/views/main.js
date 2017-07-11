@@ -13,7 +13,9 @@ module.exports = function (state, emit) {
         <form onsubmit=${handleSubmit}>
           ${select(options)}
           ${state.form.type === 'Person' ? PersonForm() : DefaultForm()}
-          <button class="btn btn-default" type="submit">Register</button>
+          <div class="form-group">
+            <button class="btn btn-default" type="submit">Submit</button>
+          </div>
         </form>
       </div>
     </div>
@@ -22,7 +24,7 @@ module.exports = function (state, emit) {
   function select (options, value = state.form.type) {
     function option (o) {
       return html`
-        <option value="${o.value}"selected="${value === o.value}">
+        <option value=${o.value} selected=${value === o.value}>
           ${o.label}
         </option>
       `
