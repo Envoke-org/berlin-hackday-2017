@@ -1,0 +1,141 @@
+html {
+  font-size: 62.5%;
+}
+
+@media (min-resolution: 1dppx), (min-resolution: 96dpi), (-webkit-min-device-pixel-ratio: 1) {
+  html {
+    font-size: 1rem;
+  }
+}
+
+@media (min-resolution: 2dppx), (min-resolution: 192dpi), (-webkit-min-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2/1) {
+  html {
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-resolution: 3dppx), (min-resolution: 288dpi), (-webkit-min-device-pixel-ratio: 3), (-o-min-device-pixel-ratio: 3/1) {
+  html {
+    font-size: 1.2rem;
+  }
+}
+
+body {
+  background-color: #5FEB8E;
+  font: 1rem / 1.2 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+}
+
+.container, .container-fluid {
+  background-color: #fff;
+  min-height: 600px;
+}
+
+form {
+  margin: 0;
+}
+
+.form-control {
+  border-radius: 0;
+}
+
+.dropzone {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.dropzone.hover {
+  border: 10px solid #FE5;
+  color: #FE5;
+}
+
+.dropzone.dropped {
+  background: #222;
+  border: 10px solid #444;
+}
+
+.dropzone div {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.dropzone input[type="file"] {
+  cursor: pointer;
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.drop-info {
+  font-size: 4rem;
+  font-weight: bold;
+  text-align: center;
+  width: 75%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate3D(-50%, -50%, 0);
+}
+
+.dragging {
+  opacity: .8;
+}
+
+.btn {
+  margin: 0 1rem;
+  background-color: #F6FDAC;
+  color: #424242;
+  border: none;
+  border-radius: 0;
+}
+
+.btn-default {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.btn-big {
+  font-size: 2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.form-control {
+  appearance: none;
+  border: none;
+  position: relative;
+  background: #fff;
+  border-radius: none;
+  height: 48px;
+  box-shadow: none;
+  color: #333;
+  font-size: 1rem;
+  padding-left: 1.5rem;
+}
+.form-control:focus {
+  background: rgba(200, 200, 200, .1);
+  box-shadow: none;
+  outline: none;
+}
+.form-control:-webkit-input-placeholder {
+  color: #999999;
+  font-size: .8rem;
+}
+
+select.form-control {
+  margin: 0 1rem;
+  width: auto;
+}
+
