@@ -43,7 +43,7 @@ module.exports = function (state, emit) {
 
       const options = {
         method: 'POST',
-        url: `http://localhost:8085/`,
+        url: `http://www.auggod.io/resonate/`,
         body: formData
       }
 
