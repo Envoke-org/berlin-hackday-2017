@@ -1,5 +1,4 @@
 const envoke = require('./lib/index.js')
-const driver = require('bigchaindb-driver')
 const choo = require('choo')
 const html = require('choo/html')
 const log = require('choo-log')
@@ -8,10 +7,8 @@ const css = require('sheetify')
 const bdb = require('./bdb/index.js')
 
 css('./styles/bootstrap.min.css')
+css('./styles/flex.css')
 css('./styles/layout.css')
-
-// BigchainDB server instance or IPDB (e.g. https://test.ipdb.io/api/v1/)
-const API_PATH = 'http://localhost:9984/api/v1/'
 
 const { newPerson, newOrganization, newMusicGroup } = envoke.schema
 
@@ -24,6 +21,13 @@ app.route('/register', Layout(require('./views/main')))
 app.route('/key', Layout(require('./views/key')))
 app.route('/upload', Layout(require('./views/upload')))
 app.route('/publish', Layout(require('./views/publish')))
+app.route('*', Layout((state, emit) => {
+  return html`
+    <div class="layout container">
+      <h1>404: Not found</h1>
+    </div>
+  `
+}))
 app.mount('body')
 
 function Layout (View) {
@@ -37,18 +41,16 @@ function Layout (View) {
 }
 
 function store (state, emitter) {
-  if (!state.form) {
-    state.form = {
-      birthDate: '',
-      familyName: '',
-      givenName: '',
-      image: '',
-      name: '',
-      description: '',
-      email: '',
-      members: '',
-      type: 'Person'
-    }
+  state.form = state.form || {
+    birthDate: '',
+    familyName: '',
+    givenName: '',
+    image: '',
+    name: '',
+    description: '',
+    email: '',
+    members: '',
+    type: 'Person'
   }
 
   state.mnemonic = state.mnemonic || ''
@@ -58,7 +60,6 @@ function store (state, emitter) {
 
   emitter.on('DOMContentLoaded', () => {
     emitter.on('create-key-pair', createKeyPair)
-    emitter.on('create-transaction', createTransaction)
     emitter.on('create-user', createUser)
     emitter.on('update-type', (value) => {
       state.form.type = value
@@ -121,7 +122,7 @@ function store (state, emitter) {
     state.form = payload
     state.user = user
     console.log(user)
-    emitter.emit('pushState', '/create')
+    emitter.emit('pushState', '/upload')
   }
 
   // Create a new keypair.
@@ -129,26 +130,5 @@ function store (state, emitter) {
     const key = bdb.generateKeypair()
     state.key = key
     emitter.emit('render')
-  }
-
-  // Construct a transaction payload
-  function createTransaction (payload) {
-    const { data, metadata } = payload
-    const tx = driver.Transaction.makeCreateTransaction(extend(data, {
-      datetime: new Date().toString()
-    }), metadata, [ driver.Transaction.makeOutput(
-      driver.Transaction.makeEd25519Condition(state.key.publicKey))],
-      state.key.publicKey
-    )
-
-    // Sign the transaction with private keys
-    const txSigned = driver.Transaction.signTransaction(tx, state.key.privateKey)
-
-    // Send the transaction off to BigchainDB
-    const conn = new driver.Connection(API_PATH)
-
-    conn.postTransaction(txSigned)
-      .then(() => conn.pollStatusAndFetchTransaction(txSigned.id))
-      .then(retrievedTx => console.log('Transaction', retrievedTx.id, 'successfully posted.'))
   }
 }

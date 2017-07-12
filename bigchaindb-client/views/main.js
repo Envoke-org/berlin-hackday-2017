@@ -1,20 +1,38 @@
 const html = require('choo/html')
+const css = require('sheetify')
 const extend = require('xtend')
+
+const prefix = css`
+  :host {
+    flex-direction: column;
+  }
+  @media(min-width: 960px) {
+    :host {
+      flex-direction: row;
+    }
+  }
+  :host .headline {
+    margin: 2rem 1rem;
+  }
+`
 
 const options = ['Person', 'Organization', 'MusicGroup'].map((n) => ({ value: n, label: n }))
 
 module.exports = function (state, emit) {
   return html`
-    <div class="container">
-      <h1>
-        ${text()}
-      </h1>
-      <div class="row">
+    <div class="${prefix} layout container">
+      <div class="flex">
+
+      </div>
+      <div class="flex">
+        <h1 class="headline">
+          ${text()}
+        </h1>
         <form onsubmit=${handleSubmit}>
           ${select(options)}
           ${state.form.type === 'Person' ? PersonForm() : DefaultForm()}
           <div class="form-group">
-            <button class="btn btn-default" type="submit">Submit</button>
+            <button class="btn btn-big" type="submit">Submit</button>
           </div>
         </form>
       </div>
@@ -85,7 +103,7 @@ module.exports = function (state, emit) {
           <input type="text" class="form-control" name="members" placeholder="Members" value=${state.form.members} required />
         </div>
         <div class="form-group">
-          <input class="form-control" type="text" name="image" placeholder="Image url" value=${state.form.image} required />
+          <input class="form-control" type="url" name="image" placeholder="Image url" value=${state.form.image} required />
         </div>
       </fieldset>
     `
@@ -104,7 +122,7 @@ module.exports = function (state, emit) {
           <input class="form-control" type="text" name="givenName" placeholder="Given name" value=${state.form.givenName} required />
         </div>
         <div class="form-group">
-          <input class="form-control" type="text" name="image" placeholder="Image url" value=${state.form.image} required />
+          <input class="form-control" type="url" name="image" placeholder="Image url" value=${state.form.image} required />
         </div>
       </fieldset>
     `
