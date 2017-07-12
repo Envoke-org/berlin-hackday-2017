@@ -1,5 +1,3 @@
-const ffprobe = require('ffprobe')
-const ffprobeStatic = require('ffprobe-static')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')

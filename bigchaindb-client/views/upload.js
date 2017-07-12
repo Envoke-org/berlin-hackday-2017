@@ -50,7 +50,8 @@ module.exports = function (state, emit) {
       xhr(options, (err, res, body) => {
         if (err) { return }
         const json = JSON.parse(body)
-        console.log(json)
+        const { data, hash } = json
+        emit('set-metadata', {metadata: data.format.tags, hash})
       })
 
       // see link
