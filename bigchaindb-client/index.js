@@ -56,6 +56,7 @@ function store (state, emitter) {
   state.metadata = state.metadata || {}
   state.mnemonic = state.mnemonic || ''
   state.keyPair = state.keyPair || {}
+  state.transaction = state.transaction || {}
 
   state.dragging = false
 
@@ -83,11 +84,13 @@ function store (state, emitter) {
       emitter.emit('render')
     })
     emitter.on('publish', (payload) => {
-      const { data = { city: 'Berlin, DE', temperature: 22 } } = payload
-      bdb.publish(state.keyPair, extend(data, {
+      const { hash, metadata } = payload
+      bdb.publish(state.keyPair, extend({hash, metadata}, {
         datetime: new Date().toString()})
       ).then(function (transaction) {
+        state.transaction = transaction
         console.log(transaction)
+        emitter.emit('render')
       })
     })
     emitter.on('set-metadata', (data) => {
