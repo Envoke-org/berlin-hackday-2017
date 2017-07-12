@@ -4,6 +4,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const formidable = require('formidable')
+const createHash = require('sha.js')
+const sha256 = createHash('sha256')
 const app = express()
 
 app.use(cors())
@@ -18,10 +20,11 @@ app.post('/', function (req, res, next) {
 
   form.parse(req, function (err, fields, files) {
     if (err) return next(err)
-    ffprobe(files.myFile.path, { path: ffprobeStatic.path }, function (err, info) {
+    const file = files.myFile
+    const hash = sha256.update(file, 'utf8').digest('hex')
+    ffprobe(file.path, { path: ffprobeStatic.path }, function (err, info) {
       if (err) return next(err)
-      console.log(info)
-      return res.json({data: info})
+      return res.json({data: info, hash})
     })
   })
 })

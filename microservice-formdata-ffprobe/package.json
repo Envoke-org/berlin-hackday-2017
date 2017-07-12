@@ -9,7 +9,8 @@
     "express": "^4.15.3",
     "ffprobe": "^1.1.0",
     "ffprobe-static": "^2.0.0",
-    "formidable": "^1.1.1"
+    "formidable": "^1.1.1",
+    "sha.js": "^2.4.8"
   },
   "devDependencies": {},
   "scripts": {
