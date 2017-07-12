@@ -10,7 +10,8 @@
     "ffprobe": "^1.1.0",
     "ffprobe-static": "^2.0.0",
     "formidable": "^1.1.1",
-    "sha.js": "^2.4.8"
+    "sha.js": "^2.4.8",
+    "shelljs": "^0.7.8"
   },
   "devDependencies": {},
   "scripts": {

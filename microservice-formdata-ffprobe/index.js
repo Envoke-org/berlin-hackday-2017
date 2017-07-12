@@ -7,6 +7,7 @@ const formidable = require('formidable')
 const createHash = require('sha.js')
 const sha256 = createHash('sha256')
 const app = express()
+const shell = require('shelljs')
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -22,9 +23,9 @@ app.post('/', function (req, res, next) {
     if (err) return next(err)
     const file = files.myFile
     const hash = sha256.update(file, 'utf8').digest('hex')
-    ffprobe(file.path, { path: ffprobeStatic.path }, function (err, info) {
-      if (err) return next(err)
-      return res.json({data: info, hash})
+    return res.json({
+      data: JSON.parse(shell.exec(`ffprobe -v quiet -print_format json -show_format -show_streams ${file.path}`)),
+      hash
     })
   })
 })
