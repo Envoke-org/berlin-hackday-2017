@@ -28,7 +28,7 @@ module.exports = function (state, emit) {
         </h1>
       </div>
       <div class="flex">
-        <img src="https://thumb9.shutterstock.com/display_pic_with_logo/61979/61979,1271071006,5/stock-photo-muscular-man-with-big-chain-50748058.jpg" title="Big chain db mann" />
+
       </div>
     </div>
   `
